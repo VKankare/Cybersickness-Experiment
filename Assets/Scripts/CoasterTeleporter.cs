@@ -7,11 +7,13 @@ public class CoasterTeleporter : MonoBehaviour
 
     [SerializeField] private GameObject cart;
     [SerializeField] MoveCart moveCart;
+    [SerializeField] GameObject playerCamera;
 
     private void OnTriggerEnter(Collider coll)
     {
         coll.transform.position = cart.transform.position;
-        coll.transform.rotation = cart.transform.rotation;
+        //coll.transform.rotation = cart.transform.rotation;
+        playerCamera.transform.rotation = cart.transform.rotation;
         moveCart.trigger.isTrigger = true;
     }
 }
