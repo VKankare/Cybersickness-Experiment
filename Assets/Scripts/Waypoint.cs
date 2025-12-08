@@ -14,6 +14,8 @@ public class Waypoint : MonoBehaviour
     [SerializeField] private int sectionCounter;
     private int sections = 1;
     [SerializeField] private VignetteModifier vm;
+    public GameObject walls;
+    public bool hasWalls;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class Waypoint : MonoBehaviour
 
         if (currentPoint >= points.Length)
         {
+            gm.EnableSlider();
             currentPoint = 0;
 
             if (sectionCounter < sections)
@@ -38,12 +41,23 @@ public class Waypoint : MonoBehaviour
             }
             else
             {
+                gm.DisableInput();
                 gm.NextCSMethod();
+                StartCoroutine(CSMethodChange());
+                if(hasWalls)
+                {
+                    DisableWalls();
+                }
             }
 
         }
 
         transform.position = points[currentPoint].position;
+    }
+
+    public void DisableWalls()
+    {
+        walls.SetActive(false);
     }
 
     IEnumerator TeleportToStart(Collider coll)
@@ -55,5 +69,16 @@ public class Waypoint : MonoBehaviour
         moveProv.useGravity = true;
         fadeScreen.FadeIn();
         gm.EnableInput();
+        gm.EnableMovement();
+    }
+
+    IEnumerator CSMethodChange()
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+        moveProv.useGravity = true;
+        fadeScreen.FadeIn();
+        gm.EnableInput();
+        gm.EnableMovement();
     }
 }

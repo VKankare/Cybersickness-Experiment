@@ -18,6 +18,6 @@ public class ParentCart : MonoBehaviour
     {
         coll.transform.SetParent(transform);
         moveProv.useGravity = false;
-        gm.DisableInput();
+        gm.DisableMovement();
     }
 }
