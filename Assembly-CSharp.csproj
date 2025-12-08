@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\PlayerCollision.cs" />
     <Compile Include="Assets\Scripts\ElevatorWait.cs" />
     <Compile Include="Assets\Scripts\PlatformMoving.cs" />
+    <Compile Include="Assets\Scripts\SliderInteraction.cs" />
     <Compile Include="Assets\Scripts\ElevatorButton.cs" />
     <Compile Include="Assets\ElevatorDestroyer.cs" />
     <Compile Include="Assets\Scripts\MoveCart.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Assets\Scripts\Guideline.cs" />
     <Compile Include="Assets\Scripts\CoasterTeleporter.cs" />
     <Compile Include="Assets\Scripts\FadeScreen.cs" />
+    <Compile Include="Assets\Scripts\WallRemover.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TerrainSampleAssets\ThirdPartyNotices.txt" />

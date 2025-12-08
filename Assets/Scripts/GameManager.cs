@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +14,13 @@ public class GameManager : MonoBehaviour
     public GameObject pmObject;
     public GameObject vmObject;
     [SerializeField] int mode;
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Button button;
+    [SerializeField] private Slider slider;
+    [SerializeField] private float[] sections;
+    [SerializeField] private ActionBasedContinuousMoveProvider moveProvider;
+    public int currentSection;
+
 
     private Vector3 pmPosInitial;
     private Vector3 vmPosInitial;
@@ -23,7 +32,11 @@ public class GameManager : MonoBehaviour
 
         mode = 1;
 
+        currentSection = 0;
+
         NextCSMethod();
+
+        canvas.enabled = true; //remember to set to false
     }
 
     public void DisableInput()
@@ -34,6 +47,16 @@ public class GameManager : MonoBehaviour
     public void EnableInput()
     {
         action.EnableInput();
+    }
+
+    public void DisableMovement()
+    {
+        moveProvider.enabled = false;
+    }
+
+    public void EnableMovement()
+    {
+        moveProvider.enabled = true;
     }
 
     public void NextCSMethod()
@@ -58,6 +81,18 @@ public class GameManager : MonoBehaviour
 
             mode = 0;
         }
+    }
+
+    public void ButtonPress()
+    {
+        sections[currentSection] = slider.value;
+        canvas.enabled = false;
+        currentSection++;
+    }
+
+    public void EnableSlider()
+    {
+        canvas.enabled = true;
     }
 
 }
