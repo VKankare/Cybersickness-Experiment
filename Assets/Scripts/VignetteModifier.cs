@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class VignetteModifier : MonoBehaviour
 {
     public Material vignetteMat;
-
+    public ActionBasedContinuousMoveProvider moveProvider;
     public CharacterController controller;
     private Vector3 currentPos;
     private Vector3 lastPos;
@@ -26,8 +26,24 @@ public class VignetteModifier : MonoBehaviour
         lastPos = controller.transform.position;
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        Vector2 left = moveProvider.leftHandMoveAction.action.ReadValue<Vector2>();
+        Vector2 right = moveProvider.rightHandMoveAction.action.ReadValue<Vector2>();
+
+        float combinedInput = Mathf.Clamp01((left.magnitude + right.magnitude) * 0.5f);
+
+        moveProvider.moveSpeed = maxVelocity * combinedInput;
+
+        float targetVignetteSize = Mathf.Lerp(maxVignetteSize, minVignetteSize, combinedInput);
+
+        currentVignetteSize = Mathf.Lerp(currentVignetteSize, targetVignetteSize, Time.deltaTime * vignetteSmoothSpeed);
+
+        vignetteMat.SetFloat("_ApertureSize", currentVignetteSize);
+    }
+
+    // Update is called once per frame
+    /*void Update()
     {
         currentPos = controller.transform.position;
         var velocity = (currentPos - lastPos) / Time.deltaTime;
@@ -41,5 +57,5 @@ public class VignetteModifier : MonoBehaviour
         currentVignetteSize = Mathf.Lerp(currentVignetteSize, targetVignetteSize, Time.deltaTime * vignetteSmoothSpeed);
 
         vignetteMat.SetFloat("_ApertureSize", currentVignetteSize);
-    }    
+    }    */
 }

@@ -14,12 +14,14 @@ public class GameManager : MonoBehaviour
     public GameObject pmObject;
     public GameObject vmObject;
     [SerializeField] int mode;
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private Canvas questionnaire;
+    [SerializeField] private Canvas playerUI;
     [SerializeField] private Button button;
     [SerializeField] private Slider slider;
     [SerializeField] private float[] sections;
     [SerializeField] private ActionBasedContinuousMoveProvider moveProvider;
     public int currentSection;
+    public int compassSection;
 
 
     private Vector3 pmPosInitial;
@@ -27,16 +29,15 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        DisableMovement();
+
         pmPosInitial = pmObject.transform.localPosition;
         vmPosInitial = vmObject.transform.localPosition;
 
-        mode = 1;
-
         currentSection = 0;
+        compassSection = 0;
 
         NextCSMethod();
-
-        canvas.enabled = true; //remember to set to false
     }
 
     public void DisableInput()
@@ -86,13 +87,15 @@ public class GameManager : MonoBehaviour
     public void ButtonPress()
     {
         sections[currentSection] = slider.value;
-        canvas.enabled = false;
+        questionnaire.transform.position = new Vector3(0, 0, 0);
+        EnableMovement();
         currentSection++;
     }
 
     public void EnableSlider()
     {
-        canvas.enabled = true;
+        DisableMovement();
+        questionnaire.transform.position = playerUI.transform.position;
+        questionnaire.transform.rotation = playerUI.transform.rotation;
     }
-
 }

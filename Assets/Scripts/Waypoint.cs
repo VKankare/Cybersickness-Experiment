@@ -29,7 +29,6 @@ public class Waypoint : MonoBehaviour
 
         if (currentPoint >= points.Length)
         {
-            gm.EnableSlider();
             currentPoint = 0;
 
             if (sectionCounter < sections)
@@ -48,8 +47,8 @@ public class Waypoint : MonoBehaviour
                 {
                     DisableWalls();
                 }
+                gm.compassSection++;
             }
-
         }
 
         transform.position = points[currentPoint].position;
@@ -67,9 +66,9 @@ public class Waypoint : MonoBehaviour
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
         coll.transform.position = sectionStart.position;
         moveProv.useGravity = true;
+        gm.EnableSlider();
         fadeScreen.FadeIn();
         gm.EnableInput();
-        gm.EnableMovement();
     }
 
     IEnumerator CSMethodChange()
@@ -77,8 +76,8 @@ public class Waypoint : MonoBehaviour
         fadeScreen.FadeOut();
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
         moveProv.useGravity = true;
+        gm.EnableSlider();
         fadeScreen.FadeIn();
         gm.EnableInput();
-        gm.EnableMovement();
     }
 }
