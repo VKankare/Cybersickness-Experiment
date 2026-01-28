@@ -38,7 +38,7 @@ public class Waypoint : MonoBehaviour
                 gm.NextCSMethod();
                 StartCoroutine(TeleportToStart(coll));
             }
-            else
+            else if(sectionCounter == sections && gm.compassSection < 3)
             {
                 gm.DisableInput();
                 gm.NextCSMethod();
@@ -48,6 +48,16 @@ public class Waypoint : MonoBehaviour
                     DisableWalls();
                 }
                 gm.compassSection++;
+            }
+            else if(sectionCounter == sections && gm.compassSection >= 3)
+            {
+                gm.DisableInput();
+                gm.EmptyCSMethod();
+                StartCoroutine(TeleportToStart(coll));
+                if(hasWalls)
+                {
+                    DisableWalls();
+                }
             }
         }
 
@@ -67,6 +77,10 @@ public class Waypoint : MonoBehaviour
         coll.transform.position = sectionStart.position;
         moveProv.useGravity = true;
         gm.EnableSlider();
+        if(gm.coasterMode)
+        {
+            gm.toggleCoasterMode();
+        }
         fadeScreen.FadeIn();
         gm.EnableInput();
     }
@@ -78,6 +92,10 @@ public class Waypoint : MonoBehaviour
         moveProv.useGravity = true;
         gm.EnableSlider();
         fadeScreen.FadeIn();
+        if(gm.coasterMode)
+        {
+            gm.toggleCoasterMode();
+        }
         gm.EnableInput();
     }
 }

@@ -7,13 +7,13 @@ public class Compass : MonoBehaviour
     public Transform headset;
     public Transform[] target;
     public GameManager gm;
-    [SerializeField] private Canvas canvas; 
+    [SerializeField] private MeshRenderer arrow;
 
     void Update()
     {
-        if(gm.compassSection == 3)
+        if(gm.compassSection >= 3)
         {
-            canvas.transform.localPosition = new Vector3(-2, -2, -2); 
+            arrow.enabled = false;
         }
 
         if (!headset || !target[gm.compassSection]) 

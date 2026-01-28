@@ -20,8 +20,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider slider;
     [SerializeField] private float[] sections;
     [SerializeField] private ActionBasedContinuousMoveProvider moveProvider;
+    [SerializeField] private ActionBasedContinuousTurnProvider turnProvider;
     public int currentSection;
     public int compassSection;
+    public bool coasterMode;
+    public bool coasterSection = false;
 
 
     private Vector3 pmPosInitial;
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour
         compassSection = 0;
 
         NextCSMethod();
+        coasterMode = false;
     }
 
     public void DisableInput()
@@ -59,6 +63,16 @@ public class GameManager : MonoBehaviour
     {
         moveProvider.enabled = true;
     }
+
+    public void DisableTurning()
+    {
+        turnProvider.enabled = false;
+    }
+
+    public void EnableTurning()
+    {
+        turnProvider.enabled = true;
+    }    
 
     public void NextCSMethod()
     {
@@ -84,11 +98,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EmptyCSMethod()
+    {
+        Vector3 newPosp = pmObject.transform.localPosition;
+        newPosp.z = -2;
+
+        pmObject.transform.localPosition = newPosp;
+
+        Vector3 newPosv = vmObject.transform.localPosition;
+        newPosv.z = -2;
+        vmObject.transform.localPosition = newPosv;
+    }
+
     public void ButtonPress()
     {
         sections[currentSection] = slider.value;
         questionnaire.transform.position = new Vector3(0, 0, 0);
         EnableMovement();
+        EnableTurning();
         currentSection++;
     }
 
@@ -97,5 +124,17 @@ public class GameManager : MonoBehaviour
         DisableMovement();
         questionnaire.transform.position = playerUI.transform.position;
         questionnaire.transform.rotation = playerUI.transform.rotation;
+    }
+
+    public void toggleCoasterMode()
+    {
+        if(coasterMode)
+        {
+            coasterMode = false;
+        }
+        else if(!coasterMode)
+        {
+            coasterMode = true;
+        }
     }
 }
