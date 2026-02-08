@@ -13,6 +13,7 @@ TagManager:
   - UI
   - whatIsGround
   - Waypoint
+  - Overlay UI
   - 
   - 
   - 
@@ -35,8 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - OVROverlayCanvas Rendering
   m_SortingLayers:
   - name: Default
     uniqueID: 0

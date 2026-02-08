@@ -12,6 +12,10 @@ public class VignetteModifier : MonoBehaviour
     private Vector3 lastPos;
     [SerializeField] private MeshRenderer mesh;
     public GameManager gm;
+    private enum intensityLevel {Off, Low, High}
+    [SerializeField] private float timeOff;
+    [SerializeField] private float timeLow;
+    [SerializeField] private float timeHigh;
 
 
     public float vignetteSmoothSpeed;
@@ -29,7 +33,7 @@ public class VignetteModifier : MonoBehaviour
 
     void Update()
     {
-        if(gm.coasterMode)
+        if(gm.coasterMode && gm.mode == 1)
         {
             Vector2 left = moveProvider.leftHandMoveAction.action.ReadValue<Vector2>();
             Vector2 right = moveProvider.rightHandMoveAction.action.ReadValue<Vector2>();
@@ -42,7 +46,22 @@ public class VignetteModifier : MonoBehaviour
 
             currentVignetteSize = Mathf.Lerp(currentVignetteSize, targetVignetteSize, Time.deltaTime * vignetteSmoothSpeed);
 
-            vignetteMat.SetFloat("_ApertureSize", currentVignetteSize);            
+            vignetteMat.SetFloat("_ApertureSize", currentVignetteSize);   
+            
+            switch(GetLevel(combinedInput))
+            {
+                case intensityLevel.Off:
+                    timeOff += Time.deltaTime;
+                    break;
+                case intensityLevel.Low:
+                    timeLow += Time.deltaTime;
+                    break;
+                case intensityLevel.High:
+                    timeHigh += Time.deltaTime;
+                    break;
+            }
+
+            Debug.Log("vignette intensity: " + GetLevel( combinedInput));         
         }
         else if(!gm.coasterMode)
         {
@@ -59,5 +78,21 @@ public class VignetteModifier : MonoBehaviour
 
             vignetteMat.SetFloat("_ApertureSize", currentVignetteSize);            
         }
+    }
+
+    intensityLevel GetLevel(float combinedInput)
+    {
+        if(combinedInput < 0.01f)
+        {
+            return intensityLevel.Off;            
+        }
+        else if(combinedInput <= 0.5f)
+        {
+            return intensityLevel.Low;
+        }
+        else
+        {
+            return intensityLevel.High;
+        }   
     }
 }

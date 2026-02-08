@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public PassthroughManager pm;
     public GameObject pmObject;
     public GameObject vmObject;
-    [SerializeField] int mode;
+    public int mode;
     [SerializeField] private Canvas questionnaire;
     [SerializeField] private Canvas playerUI;
     [SerializeField] private Button button;
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public int currentSection;
     public int compassSection;
     public bool coasterMode;
-    public bool coasterSection = false;
+    public bool coasterSection;
 
 
     private Vector3 pmPosInitial;
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 
         NextCSMethod();
         coasterMode = false;
+        coasterSection = false;
     }
 
     public void DisableInput()
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour
         questionnaire.transform.rotation = playerUI.transform.rotation;
     }
 
-    public void toggleCoasterMode()
+    public void ToggleCoasterMode()
     {
         if(coasterMode)
         {
@@ -135,6 +136,18 @@ public class GameManager : MonoBehaviour
         else if(!coasterMode)
         {
             coasterMode = true;
+        }
+    }
+
+    public void ToggleCoasterSection()
+    {
+        if(coasterSection)
+        {
+            coasterSection = false;
+        }
+        else if(!coasterSection)
+        {
+            coasterSection = true;
         }
     }
 }

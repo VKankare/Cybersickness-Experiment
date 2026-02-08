@@ -1075,11 +1075,33 @@
                 },
                 {
                     "name": "",
+                    "id": "b3c4ca93-760a-4a84-b10a-5ca3d911b29a",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8e383b1a-270f-4c20-819b-89a59cffb498",
                     "path": "<XRController>{LeftHand}/{Primary2DAxis}",
                     "interactions": "",
                     "processors": "StickDeadzone",
                     "groups": "Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4f068a21-17fc-48b3-841d-65a8b60d7c34",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1871,11 +1893,33 @@
                 },
                 {
                     "name": "",
+                    "id": "c1fc0540-ad85-4197-b642-dad06ab4a742",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "022046aa-be71-4288-859d-6dd42844f6e6",
                     "path": "<XRController>{RightHand}/{Primary2DAxis}",
                     "interactions": "",
                     "processors": "StickDeadzone",
                     "groups": "Continuous Move",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b60cbe41-c6b1-439d-908a-0f29ef215cd5",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Continuous Move",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -79,7 +79,7 @@ public class Waypoint : MonoBehaviour
         gm.EnableSlider();
         if(gm.coasterMode)
         {
-            gm.toggleCoasterMode();
+            gm.ToggleCoasterMode();
         }
         fadeScreen.FadeIn();
         gm.EnableInput();
@@ -94,7 +94,7 @@ public class Waypoint : MonoBehaviour
         fadeScreen.FadeIn();
         if(gm.coasterMode)
         {
-            gm.toggleCoasterMode();
+            gm.ToggleCoasterMode();
         }
         gm.EnableInput();
     }

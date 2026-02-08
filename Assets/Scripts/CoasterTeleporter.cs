@@ -16,7 +16,7 @@ public class CoasterTeleporter : MonoBehaviour
         coll.transform.rotation = cart.transform.rotation;
         playerCamera.transform.rotation = cart.transform.rotation;
         moveCart.trigger.isTrigger = true;
-        gm.toggleCoasterMode();
-        gm.coasterSection = true;
+        gm.ToggleCoasterMode();
+        gm.ToggleCoasterSection();
     }
 }
