@@ -23,6 +23,8 @@ public class PassthroughManager : MonoBehaviour
 
     private float currentScaleX;
     private float yRatio;
+    public float combinedInput;
+    public float oneStickMax;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +44,10 @@ public class PassthroughManager : MonoBehaviour
             Vector2 left = moveProvider.leftHandMoveAction.action.ReadValue<Vector2>();
             Vector2 right = moveProvider.rightHandMoveAction.action.ReadValue<Vector2>();
 
-            float combinedInput = Mathf.Clamp01((left.magnitude + right.magnitude) * 0.5f);
+            float leftStrength  = Mathf.Min(left.magnitude, oneStickMax);
+            float rightStrength = Mathf.Min(right.magnitude, oneStickMax);
+
+            float combinedInput = Mathf.Clamp01(leftStrength + rightStrength);
             float targetScaleX = Mathf.Lerp(maxScaleX, minScaleX, combinedInput);
 
             currentScaleX = Mathf.Lerp(currentScaleX, targetScaleX, Time.deltaTime * scaleChangeSpeed);
@@ -96,7 +101,7 @@ public class PassthroughManager : MonoBehaviour
         {
             return intensityLevel.Off;            
         }
-        else if(combinedInput <= 0.5f)
+        else if(combinedInput <= oneStickMax)
         {
             return intensityLevel.Low;
         }

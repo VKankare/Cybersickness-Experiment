@@ -22,6 +22,8 @@ public class VignetteModifier : MonoBehaviour
     public float maxVignetteSize;
     public float minVignetteSize;
     public float maxVelocity;
+    public float combinedInput;
+    public float oneStickMax;
 
     private float currentVignetteSize;
 
@@ -38,7 +40,10 @@ public class VignetteModifier : MonoBehaviour
             Vector2 left = moveProvider.leftHandMoveAction.action.ReadValue<Vector2>();
             Vector2 right = moveProvider.rightHandMoveAction.action.ReadValue<Vector2>();
 
-            float combinedInput = Mathf.Clamp01((left.magnitude + right.magnitude) * 0.5f);
+            float leftStrength  = Mathf.Min(left.magnitude, oneStickMax);
+            float rightStrength = Mathf.Min(right.magnitude, oneStickMax);
+
+            combinedInput = Mathf.Clamp01(leftStrength + rightStrength);
 
             moveProvider.moveSpeed = maxVelocity * combinedInput;
 
@@ -86,7 +91,7 @@ public class VignetteModifier : MonoBehaviour
         {
             return intensityLevel.Off;            
         }
-        else if(combinedInput <= 0.5f)
+        else if(combinedInput <= oneStickMax)
         {
             return intensityLevel.Low;
         }

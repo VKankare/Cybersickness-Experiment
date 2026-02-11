@@ -13,7 +13,6 @@ public class Waypoint : MonoBehaviour
     [SerializeField] ActionBasedContinuousMoveProvider moveProv;
     [SerializeField] private int sectionCounter;
     private int sections = 1;
-    [SerializeField] private VignetteModifier vm;
     public GameObject walls;
     public bool hasWalls;
 
