@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 3848077547691007581}
   - component: {fileID: 8100412937780793106}
   - component: {fileID: 2845327481285752128}
+  - component: {fileID: 2633347092564111406}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &957009459299212301
 Transform:
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2593598259421061460}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.3067752, z: 0, w: 0.95178205}
+  m_LocalRotation: {x: -0, y: 0.3067752, z: -0, w: 0.95178205}
   m_LocalPosition: {x: -82.6, y: 298.8, z: -279.1}
   m_LocalScale: {x: 25.7, y: 1.5159999, z: 20.1}
   m_ConstrainProportionsScale: 0
@@ -105,3 +106,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!205 &2633347092564111406
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593598259421061460}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.4
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.2
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.08
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1

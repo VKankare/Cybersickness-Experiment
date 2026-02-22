@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7102394719317901813}
   - component: {fileID: 64754970279368498}
   - component: {fileID: 880407958253485125}
+  - component: {fileID: 1561445510931087581}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -88,3 +89,27 @@ MonoBehaviour:
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
   m_CancelButton: Cancel
+--- !u!205 &1561445510931087581
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173982015874735829}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.4
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.2
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.08
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1

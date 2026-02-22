@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2699660792166340981}
   - component: {fileID: 6478442154907241178}
   - component: {fileID: 5817096248791123236}
+  - component: {fileID: 3228956549360122371}
   m_Layer: 0
   m_Name: Spline
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5111467113299747055}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.5674126, z: 0, w: 0.82343364}
+  m_LocalRotation: {x: -0, y: -0.5674126, z: -0, w: 0.82343364}
   m_LocalPosition: {x: -245.907, y: 313.35, z: -278.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -793,7 +794,7 @@ MonoBehaviour:
     Probability: 0
   m_Method: 1
   m_Space: 0
-  m_Spacing: {x: 1.4, y: 1.4}
+  m_Spacing: {x: 2.5, y: 2.5}
   m_Up: 1
   m_Forward: 2
   m_PositionOffset:
@@ -823,3 +824,27 @@ MonoBehaviour:
   m_DeprecatedInstances: []
   m_AutoRefresh: 1
   m_Seed: -55552
+--- !u!205 &3228956549360122371
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5111467113299747055}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.4
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.2
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.08
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1

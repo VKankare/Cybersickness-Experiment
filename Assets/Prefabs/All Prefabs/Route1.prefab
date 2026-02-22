@@ -532,6 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1572737137782864965}
+  - component: {fileID: 802272904291362110}
   m_Layer: 0
   m_Name: Route1
   m_TagString: Untagged
@@ -566,6 +567,30 @@ Transform:
   - {fileID: 3894299032599677570}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &802272904291362110
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7927572696025519088}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.4
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.2
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.08
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &8431182108803947354
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,7 +830,6 @@ MonoBehaviour:
   fadeScreen: {fileID: 0}
   moveProv: {fileID: 0}
   sectionCounter: 0
-  vm: {fileID: 0}
   walls: {fileID: 3535014048129144820}
   hasWalls: 1
 --- !u!1 &8680288166572832095

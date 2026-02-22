@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -26,12 +27,30 @@ public class GameManager : MonoBehaviour
     public bool coasterMode;
     public bool coasterSection;
 
+    public int participantID;
+    public int totalSections;
 
     private Vector3 pmPosInitial;
     private Vector3 vmPosInitial;
+    private string filePath;
 
     void Start()
     {
+        string fileName = $"P{participantID}_{System.DateTime.Now:yyyyMMdd_HHmmss}.csv";
+        filePath = Path.Combine(Application.persistentDataPath, fileName);
+
+        totalSections = sections.Length;
+
+        string header = "participantID";
+        for (int i = 1; i <= totalSections; i++)
+        {
+            header += $",section{i}";
+        }
+        header += ",pt_timeOff,pt_timeLow,pt_timeHigh";
+        header += ",vig_timeOff,vig_timeLow,vig_timeHigh\n";
+
+        File.WriteAllText(filePath, header);
+
         DisableMovement();
 
         pmPosInitial = pmObject.transform.localPosition;
@@ -109,6 +128,8 @@ public class GameManager : MonoBehaviour
         Vector3 newPosv = vmObject.transform.localPosition;
         newPosv.z = -2;
         vmObject.transform.localPosition = newPosv;
+
+        mode = 2;
     }
 
     public void ButtonPress()
@@ -118,6 +139,14 @@ public class GameManager : MonoBehaviour
         EnableMovement();
         EnableTurning();
         currentSection++;
+
+        if (currentSection >= sections.Length)
+        {
+            DisableMovement();
+            DisableTurning();
+            SaveToCSV();
+            Debug.Log("Experiment complete.");
+        }
     }
 
     public void EnableSlider()
@@ -149,5 +178,28 @@ public class GameManager : MonoBehaviour
         {
             coasterSection = true;
         }
+    }
+
+    public void SaveToCSV()
+    {
+        string line = participantID.ToString();
+
+        for (int i = 0; i < sections.Length; i++)
+        {
+            line += $",{sections[i]}";
+        }
+
+        line += $",{pm.GetTimeOff():F3}";
+        line += $",{pm.GetTimeLow():F3}";
+        line += $",{pm.GetTimeHigh():F3}";
+
+        line += $",{vm.GetTimeOff():F3}";
+        line += $",{vm.GetTimeLow():F3}";
+        line += $",{vm.GetTimeHigh():F3}";
+
+        line += "\n";
+
+        File.AppendAllText(filePath, line);
+        Debug.Log($"Data saved to {filePath}");
     }
 }

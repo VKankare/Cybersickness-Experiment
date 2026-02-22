@@ -100,4 +100,19 @@ public class VignetteModifier : MonoBehaviour
             return intensityLevel.High;
         }   
     }
+
+    public float GetTimeOff()
+    {
+        return timeOff;
+    }
+
+    public float GetTimeLow()
+    {
+        return timeLow;
+    }
+
+    public float GetTimeHigh()
+    {
+        return timeHigh;
+    }
 }

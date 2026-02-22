@@ -171,7 +171,7 @@ Material:
     - _AffectMetal: 1
     - _AffectNormal: 1
     - _AffectSmoothness: 1
-    - _ApertureSize: 0.9999817
+    - _ApertureSize: 0.55006415
     - _BillboardKwToggle: 0
     - _BillboardShadowFade: 0.5
     - _BlurSize: 10
