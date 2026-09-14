@@ -17,7 +17,9 @@ public class ParentCart : MonoBehaviour
     private void OnTriggerEnter(Collider coll)
     {
         coll.transform.SetParent(transform);
+        coll.transform.rotation = transform.rotation;
         moveProv.useGravity = false;
         gm.DisableMovement();
+        gm.DisableTurning();
     }
 }

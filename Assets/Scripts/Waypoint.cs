@@ -13,7 +13,6 @@ public class Waypoint : MonoBehaviour
     [SerializeField] ActionBasedContinuousMoveProvider moveProv;
     [SerializeField] private int sectionCounter;
     private int sections = 1;
-    [SerializeField] private VignetteModifier vm;
     public GameObject walls;
     public bool hasWalls;
 
@@ -25,34 +24,45 @@ public class Waypoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
+        gm.previousPoint = points[currentPoint];
         currentPoint++;
 
         if (currentPoint >= points.Length)
         {
-            gm.EnableSlider();
+            gm.previousPoint = null;
             currentPoint = 0;
+            gm.StopTimer();
+            gm.DisableInput();
+            gm.ToggleLines();
 
             if (sectionCounter < sections)
             {
                 sectionCounter++;
-                gm.DisableInput();
                 gm.NextCSMethod();
                 StartCoroutine(TeleportToStart(coll));
             }
-            else
+            else if(sectionCounter == sections && gm.compassSection < 3)
             {
-                gm.DisableInput();
                 gm.NextCSMethod();
                 StartCoroutine(CSMethodChange());
                 if(hasWalls)
                 {
                     DisableWalls();
                 }
+                gm.compassSection++;
             }
-
+            else if(sectionCounter == sections && gm.compassSection >= 3)
+            {
+                gm.EmptyCSMethod();
+                StartCoroutine(TeleportToStart(coll));
+                if(hasWalls)
+                {
+                    DisableWalls();
+                }
+            }
         }
-
         transform.position = points[currentPoint].position;
+        gm.SaveToCSV();
     }
 
     public void DisableWalls()
@@ -67,9 +77,13 @@ public class Waypoint : MonoBehaviour
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
         coll.transform.position = sectionStart.position;
         moveProv.useGravity = true;
+        gm.EnableSlider();
+        if(gm.coasterMode)
+        {
+            gm.ToggleCoasterMode();
+        }
         fadeScreen.FadeIn();
         gm.EnableInput();
-        gm.EnableMovement();
     }
 
     IEnumerator CSMethodChange()
@@ -77,8 +91,12 @@ public class Waypoint : MonoBehaviour
         fadeScreen.FadeOut();
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
         moveProv.useGravity = true;
+        gm.EnableSlider();
         fadeScreen.FadeIn();
+        if(gm.coasterMode)
+        {
+            gm.ToggleCoasterMode();
+        }
         gm.EnableInput();
-        gm.EnableMovement();
     }
 }

@@ -9,15 +9,13 @@ public class ParentPlatform : MonoBehaviour
     [SerializeField] private ElevatorButton button;
     [SerializeField] private BoxCollider trigger;
     [SerializeField] private GameObject walls;
-
-    void Start()
-    {
-        platformMoving = GetComponent<PlatformMoving>();
-    }
+    [SerializeField] private GameObject elevator;
+    [SerializeField] private GameManager gm;
 
     private void OnTriggerEnter(Collider coll)
     {
-        coll.transform.SetParent(transform);  
+        coll.transform.SetParent(elevator.transform);  
+        gm.allowTeleport = false;
     }
 
     //TODO: fix attaching to platform if it doesn't work in vr
@@ -30,5 +28,6 @@ public class ParentPlatform : MonoBehaviour
         platformMoving.secondCollider.enabled = true;
         walls.SetActive(false);
         platformMoving.transform.position = platformMoving.start.transform.position;
+        gm.allowTeleport = true;
     }
 }

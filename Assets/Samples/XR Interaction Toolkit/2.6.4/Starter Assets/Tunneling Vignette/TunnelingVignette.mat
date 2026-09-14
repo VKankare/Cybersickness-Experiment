@@ -171,7 +171,7 @@ Material:
     - _AffectMetal: 1
     - _AffectNormal: 1
     - _AffectSmoothness: 1
-    - _ApertureSize: 1
+    - _ApertureSize: NaN
     - _BillboardKwToggle: 0
     - _BillboardShadowFade: 0.5
     - _BlurSize: 10
@@ -199,7 +199,7 @@ Material:
     - _EmissiveIntensityUnit: 0
     - _EnableHeightBlend: 0
     - _EnableInstancedPerPixelNormal: 1
-    - _FeatheringEffect: 0.3
+    - _FeatheringEffect: 0.25
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

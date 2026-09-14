@@ -15,7 +15,6 @@ public class PlatformMoving : MonoBehaviour
     public BoxCollider secondCollider;
     public GameObject start;
 
-    
     int i;
     bool reverse;
 
