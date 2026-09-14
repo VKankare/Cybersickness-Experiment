@@ -88,6 +88,7 @@
     <Compile Include="Assets\Polytope Studio\Lowpoly_Demos\Environment_Free\Helpers\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Guideline.cs" />
     <Compile Include="Assets\Scripts\CoasterTeleporter.cs" />
+    <Compile Include="Assets\Scripts\ButtonInputs.cs" />
     <Compile Include="Assets\Scripts\FadeScreen.cs" />
     <Compile Include="Assets\Scripts\WallRemover.cs" />
   </ItemGroup>

@@ -12,10 +12,14 @@ public class VignetteModifier : MonoBehaviour
     private Vector3 lastPos;
     [SerializeField] private MeshRenderer mesh;
     public GameManager gm;
-    private enum intensityLevel {Off, Low, High}
-    [SerializeField] private float timeOff;
+    private enum intensityLevel {Low, Medium, High, Max}
     [SerializeField] private float timeLow;
+    [SerializeField] private float timeMedium;
     [SerializeField] private float timeHigh;
+    [SerializeField] private float timeMax;
+    [SerializeField] private float combinedInputSum;
+    public float combinedInputDuration;
+    [SerializeField] private float averageStrengthPercent;
 
 
     public float vignetteSmoothSpeed;
@@ -44,10 +48,11 @@ public class VignetteModifier : MonoBehaviour
             float rightStrength = Mathf.Min(right.magnitude, oneStickMax);
 
             combinedInput = Mathf.Clamp01(leftStrength + rightStrength);
+            float visualInput = 1f - Mathf.Pow(1f - combinedInput, 2f);
 
             moveProvider.moveSpeed = maxVelocity * combinedInput;
 
-            float targetVignetteSize = Mathf.Lerp(maxVignetteSize, minVignetteSize, combinedInput);
+            float targetVignetteSize = Mathf.Lerp(maxVignetteSize, minVignetteSize, visualInput);
 
             currentVignetteSize = Mathf.Lerp(currentVignetteSize, targetVignetteSize, Time.deltaTime * vignetteSmoothSpeed);
 
@@ -55,18 +60,23 @@ public class VignetteModifier : MonoBehaviour
             
             switch(GetLevel(combinedInput))
             {
-                case intensityLevel.Off:
-                    timeOff += Time.deltaTime;
-                    break;
                 case intensityLevel.Low:
                     timeLow += Time.deltaTime;
+                    break;
+                case intensityLevel.Medium:
+                    timeMedium += Time.deltaTime;
                     break;
                 case intensityLevel.High:
                     timeHigh += Time.deltaTime;
                     break;
+                case intensityLevel.Max:
+                    timeMax += Time.deltaTime;
+                    break;
             }
 
-            Debug.Log("vignette intensity: " + GetLevel( combinedInput));         
+            combinedInputSum += combinedInput * Time.deltaTime;
+
+            averageStrengthPercent = GetAverageStrengthPercent();      
         }
         else if(!gm.coasterMode)
         {
@@ -76,8 +86,9 @@ public class VignetteModifier : MonoBehaviour
 
             float velocityMag = velocity.magnitude;
             float t = Mathf.Clamp01(velocityMag / maxVelocity);
+            float visualInput = 1f - Mathf.Pow(1f - t, 2f);
 
-            float targetVignetteSize = Mathf.Lerp(maxVignetteSize, minVignetteSize, t);
+            float targetVignetteSize = Mathf.Lerp(maxVignetteSize, minVignetteSize, visualInput);
 
             currentVignetteSize = Mathf.Lerp(currentVignetteSize, targetVignetteSize, Time.deltaTime * vignetteSmoothSpeed);
 
@@ -87,23 +98,22 @@ public class VignetteModifier : MonoBehaviour
 
     intensityLevel GetLevel(float combinedInput)
     {
-        if(combinedInput < 0.01f)
-        {
-            return intensityLevel.Off;            
-        }
-        else if(combinedInput <= oneStickMax)
+        if(combinedInput <= 0.25f)
         {
             return intensityLevel.Low;
         }
-        else
+        else if(combinedInput <= 0.5f)
+        {
+            return intensityLevel.Medium;
+        }
+        else if(combinedInput <= 0.75f)
         {
             return intensityLevel.High;
+        }
+        else
+        {
+            return intensityLevel.Max;
         }   
-    }
-
-    public float GetTimeOff()
-    {
-        return timeOff;
     }
 
     public float GetTimeLow()
@@ -114,5 +124,28 @@ public class VignetteModifier : MonoBehaviour
     public float GetTimeHigh()
     {
         return timeHigh;
+    }
+    public float GetTimeMedium()
+    {
+        return timeMedium;
+    }
+    public float GetTimeMax()
+    {
+        return timeMax;
+    }
+
+    public float GetDuration()
+    {
+        combinedInputDuration = timeLow + timeMedium + timeHigh + timeMax;
+        return combinedInputDuration;
+    }
+
+    public float GetAverageStrengthPercent()
+    {
+        float averageInput = combinedInputSum / GetDuration();
+
+        float percent = averageInput * 100f;
+
+        return percent;
     }
 }

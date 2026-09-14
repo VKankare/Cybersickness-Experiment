@@ -20,12 +20,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button button;
     [SerializeField] private Slider slider;
     [SerializeField] private float[] sections;
+    public Transform previousPoint;
+    [SerializeField] private float[] sectionTimes;
+    [SerializeField] private float[] sectionAvgSpeeds;
+    [SerializeField] private float timer;
+    [SerializeField] private float averageFPS;
     [SerializeField] private ActionBasedContinuousMoveProvider moveProvider;
     [SerializeField] private ActionBasedContinuousTurnProvider turnProvider;
     public int currentSection;
     public int compassSection;
     public bool coasterMode;
     public bool coasterSection;
+    public bool timerRunning;
+    public MovementSpeedModifier msm;
+    public XRInteractorLineVisual lrLeft;
+    public XRInteractorLineVisual lrRight;
+    public bool allowTeleport;
 
     public int participantID;
     public int totalSections;
@@ -33,23 +43,36 @@ public class GameManager : MonoBehaviour
     private Vector3 pmPosInitial;
     private Vector3 vmPosInitial;
     private string filePath;
+    private int startMode;
+    private string header;
+    private float totalFPS;
+    private float frameCount;
 
     void Start()
     {
-        string fileName = $"P{participantID}_{System.DateTime.Now:yyyyMMdd_HHmmss}.csv";
+        startMode = mode;
+
+        if(mode == 2)
+        {
+            SetControlGroup();
+        }
+
+        string fileName = $"Experiment_{System.DateTime.Now:yyyyMMdd_HHmmss}.csv";
         filePath = Path.Combine(Application.persistentDataPath, fileName);
 
         totalSections = sections.Length;
 
-        string header = "participantID";
+        header = "participantID";
+        header += ",group";
         for (int i = 1; i <= totalSections; i++)
         {
             header += $",section{i}";
         }
-        header += ",pt_timeOff,pt_timeLow,pt_timeHigh";
-        header += ",vig_timeOff,vig_timeLow,vig_timeHigh\n";
-
-        File.WriteAllText(filePath, header);
+        header += ",time1,avgSpeed1,time2,avgSpeed2,time3,avgSpeed3,time4,avgSpeed4";
+        header += ",pt_timeLow,pt_timeMedium,pt_timeHigh,pt_timeMax,pt_avgStrengthPercent";
+        header += ",vig_timeLow,vig_timeMedium,vig_timeHigh,vig_timeMax,vig_avgStrengthPercent";
+        header += ",total_time";
+        header += ",average_FPS\n";
 
         DisableMovement();
 
@@ -62,6 +85,17 @@ public class GameManager : MonoBehaviour
         NextCSMethod();
         coasterMode = false;
         coasterSection = false;
+    }
+
+    void Update()
+    {
+        if(timerRunning)
+        {
+            timer += Time.deltaTime;
+        }
+
+        totalFPS += 1f / Time.deltaTime;
+        frameCount++;
     }
 
     public void DisableInput()
@@ -94,6 +128,17 @@ public class GameManager : MonoBehaviour
         turnProvider.enabled = true;
     }    
 
+    public void SetControlGroup()
+    {
+        Vector3 newPosp = pmObject.transform.localPosition;
+        newPosp.z = -2;
+        pmObject.transform.localPosition = newPosp;
+
+        Vector3 newPosv = vmObject.transform.localPosition;
+        newPosv.z = -2;
+        vmObject.transform.localPosition = newPosv;
+    }
+
     public void NextCSMethod()
     {
         if (mode == 0)
@@ -116,6 +161,10 @@ public class GameManager : MonoBehaviour
 
             mode = 0;
         }
+        else if (mode == 2)
+        {
+            Debug.Log("Control group");
+        }
     }
 
     public void EmptyCSMethod()
@@ -135,16 +184,22 @@ public class GameManager : MonoBehaviour
     public void ButtonPress()
     {
         sections[currentSection] = slider.value;
+        if(currentSection == 1 || currentSection == 2 || currentSection == 5 || currentSection == 6)
+        {
+            msm.InputSectionData();
+        }
         questionnaire.transform.position = new Vector3(0, 0, 0);
         EnableMovement();
         EnableTurning();
         currentSection++;
-
+        StartTimer();
+        ToggleLines();
+        SaveToCSV();
         if (currentSection >= sections.Length)
         {
             DisableMovement();
             DisableTurning();
-            SaveToCSV();
+            StopTimer();
             Debug.Log("Experiment complete.");
         }
     }
@@ -161,10 +216,12 @@ public class GameManager : MonoBehaviour
         if(coasterMode)
         {
             coasterMode = false;
+            allowTeleport = true;
         }
         else if(!coasterMode)
         {
             coasterMode = true;
+            allowTeleport = false;
         }
     }
 
@@ -180,26 +237,79 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartTimer()
+    {
+        timerRunning = true;
+    }
+
+    public void StopTimer()
+    {
+        timerRunning = false;
+    }
+
+    public void ToggleLines()
+    {
+        if(lrLeft.enabled || lrRight.enabled)
+        {
+            lrLeft.enabled = false;
+            lrRight.enabled = false;
+        }
+        else
+        {
+            lrLeft.enabled = true;
+            lrRight.enabled = true;
+        }
+    }
+
+    public float GetAverageFPS()
+    {
+        return  totalFPS / frameCount;
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveToCSV();
+    }
+
     public void SaveToCSV()
     {
+        sectionTimes = msm.GetSectionTimes();
+        sectionAvgSpeeds = msm.GetSectionAvgSpeeds();
+        averageFPS = GetAverageFPS();
+
         string line = participantID.ToString();
+
+        line += $",{startMode}";
 
         for (int i = 0; i < sections.Length; i++)
         {
             line += $",{sections[i]}";
         }
 
-        line += $",{pm.GetTimeOff():F3}";
+        for (int i = 0; i < sectionTimes.Length; i++)
+        {
+            line += $",{sectionTimes[i]:F3}";
+            line += $",{sectionAvgSpeeds[i]:F3}";
+        }
+
         line += $",{pm.GetTimeLow():F3}";
+        line += $",{pm.GetTimeMedium():F3}";
         line += $",{pm.GetTimeHigh():F3}";
+        line += $",{pm.GetTimeMax():F3}";
+        line += $",{pm.GetAverageStrengthPercent():F3}";
 
-        line += $",{vm.GetTimeOff():F3}";
         line += $",{vm.GetTimeLow():F3}";
+        line += $",{vm.GetTimeMedium():F3}";
         line += $",{vm.GetTimeHigh():F3}";
+        line += $",{vm.GetTimeMax():F3}";
+        line += $",{vm.GetAverageStrengthPercent():F3}";
 
-        line += "\n";
+        line += $",{timer:F3}";
+        line += $",{averageFPS:F3}\n";
 
-        File.AppendAllText(filePath, line);
+        string csv = header + line;
+
+        File.WriteAllText(filePath, csv);
         Debug.Log($"Data saved to {filePath}");
     }
 }

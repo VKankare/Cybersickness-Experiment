@@ -24,22 +24,25 @@ public class Waypoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
+        gm.previousPoint = points[currentPoint];
         currentPoint++;
 
         if (currentPoint >= points.Length)
         {
+            gm.previousPoint = null;
             currentPoint = 0;
+            gm.StopTimer();
+            gm.DisableInput();
+            gm.ToggleLines();
 
             if (sectionCounter < sections)
             {
                 sectionCounter++;
-                gm.DisableInput();
                 gm.NextCSMethod();
                 StartCoroutine(TeleportToStart(coll));
             }
             else if(sectionCounter == sections && gm.compassSection < 3)
             {
-                gm.DisableInput();
                 gm.NextCSMethod();
                 StartCoroutine(CSMethodChange());
                 if(hasWalls)
@@ -50,7 +53,6 @@ public class Waypoint : MonoBehaviour
             }
             else if(sectionCounter == sections && gm.compassSection >= 3)
             {
-                gm.DisableInput();
                 gm.EmptyCSMethod();
                 StartCoroutine(TeleportToStart(coll));
                 if(hasWalls)
@@ -59,8 +61,8 @@ public class Waypoint : MonoBehaviour
                 }
             }
         }
-
         transform.position = points[currentPoint].position;
+        gm.SaveToCSV();
     }
 
     public void DisableWalls()
